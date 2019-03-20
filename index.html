@@ -1,0 +1,1897 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Easy Gaming</title>
+        <link rel="icon" href="images/logo.png" />
+        <style type="text/css">
+            * {
+                color: black;
+                font-family: sans-serif;
+            }
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            @-webkit-keyframes sk-stretchdelay {
+              0%, 40%, 100% { -webkit-transform: scaleY(0.4) }  
+              20% { -webkit-transform: scaleY(1.0) }
+            }
+            @keyframes sk-stretchdelay {
+              0%, 40%, 100% { 
+                transform: scaleY(0.4);
+                -webkit-transform: scaleY(0.4);
+              }  20% { 
+                transform: scaleY(1.0);
+                -webkit-transform: scaleY(1.0);
+              }
+            }
+            body {
+                overflow-y: hidden;
+                overflow-x: hidden;
+                background-color: lightgray;
+            }
+            button {
+                outline: 0;
+                color: white;
+                background-color: green;
+                font-size: 14pt;
+                padding: 10px 20px 10px 20px;
+                border-radius: 10px;
+                transition-duration: 0.125s;
+            }
+            button:hover {
+                cursor: pointer;
+                opacity: 0.75;
+            }
+            button:disabled {
+                background-color: lightgray;
+                color: gray;
+            }
+            input[type="text"] {
+                font-size: 14pt;
+                border-style: none;
+                border-bottom-style: solid;
+                border-bottom-color: lightgray;
+                transition-duration: 0.125s;
+                border-bottom-width: thin;
+                background-color: transparent;
+                outline: 0;
+            }
+            input:focus {
+                border-bottom-color: green;
+                border-bottom-width: medium;
+            }
+            input:disabled {
+                color: lightgray;
+                cursor: not-allowed;
+            }
+            input[type="color"] {
+                background-color: lightgray;
+                border-style: none;
+            }
+            textarea {
+                font-size: 14pt;
+                resize: none;
+                overflow-y: none;
+                border-style: none;
+                border-bottom-style: solid;
+                border-bottom-color: lightgray;
+                border-bottom-width: thin;
+                transition-duration: 0.125s;
+                outline: 0;
+            }
+            textarea:focus {
+                border-bottom-color: green;
+                border-bottom-width: medium;
+            }
+            textarea:disabled {
+                color: lightgray;
+                cursor: not-allowed;
+            }
+            li {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+            }
+            .modal-title {
+                display: table-cell;
+                color: white;
+                background-color: red;
+                width: 100vw;
+                height: 50px;
+                text-align: center;
+                vertical-align: middle;
+                font-size: 24pt;
+            }
+            .modal-text {
+                font-size: 14pt;
+                padding: 25px;
+            }
+            .flat {
+                color: green;
+                background: none;
+                border-style: none;
+            }
+            .red {
+                background-color: red;
+            }
+            .full-width {
+                margin: 10px;
+                width: 98.5%;
+                border-style: none;
+            }
+            .floating {
+                position: absolute;
+                display: block;
+                top: 85vh;
+                left: 92vw;
+                z-index: 2;
+                border-radius: 50px;
+                border-style: none;
+                width: 75px;
+                height: 75px;
+                font-size: 24pt;
+                font-weight: lighter;
+            }
+            .title {
+                display: table-cell;
+                margin: 0;
+                color: green;
+                width: 98.75vw;
+                height: 10vh;
+                text-align: center;
+                font-size: 36pt;
+                font-weight: bold;
+            }
+            .content {
+                margin-top: 10px;
+                width: 97.5vw;
+                height: 80vh;
+                padding: 10px;
+                background-color: lightgray;
+                overflow-y: scroll;
+            }
+            .header {
+                font-size: 16pt;
+                line-height: 0;
+                color: green;
+                font-weight: bold;
+            }
+            .inline {
+                display: inline;
+            }
+            .centered {
+                text-align: center;
+            }
+            .list-title {
+                font-size: 36pt;
+                line-height: 10px;
+                font-weight: bold;
+                color: green;
+            }
+            .list-description {
+                font-size: 13pt;
+            }
+            button {
+                outline: 0;
+                color: white;
+                background-color: green;
+                font-size: 14pt;
+                padding: 10px 20px 10px 20px;
+                border-radius: 10px;
+                transition-duration: 0.125s;
+            }
+            button:hover {
+                cursor: pointer;
+                opacity: 0.75;
+            }
+            .flat {
+                color: green;
+                background: none;
+                border-style: none;
+            }
+            .full-width {
+                margin: 10px;
+                width: 98.5%;
+                border-style: none;
+            }
+            .floating {
+                position: absolute;
+                display: block;
+                top: 85vh;
+                left: 92vw;
+                z-index: 2;
+                border-radius: 50px;
+                border-style: none;
+                width: 75px;
+                height: 75px;
+                font-size: 24pt;
+                font-weight: lighter;
+            }
+            .inline {
+                display: inline;
+            }
+            .list-item {
+                background-color: white;
+                margin: 5px;
+                padding: 10px;
+                width: 97.75%;
+                border-top-style: solid;
+                border-top-width: 5px;
+                border-top-color: green;
+                transition-duration: 0.25s;
+                max-height: 90px;
+                overflow-y: hidden;
+                margin-bottom: 15px;
+            }
+            .list-item:hover {
+                overflow-y: auto;
+                max-height: 200px;
+                border-top-width: 10px;
+            }
+            .list-icon {
+                width: 100px;
+                height: 90px;
+                float: right;
+                display: inline;
+            }
+            .assignment-title {
+                font-size: 18pt;
+                line-height: 10px;
+                font-weight: bold;
+                color: green;
+            }
+            .list-buttons {
+                background-color: darkgray;
+                border-style: none;
+            }
+            .modal {
+                background-color: transparent;
+                position: fixed;
+                width: 100vw;
+                height: 100vh;
+                left: 0;
+                top: 0;
+            }
+            .modal-content {
+                background-color: white;
+                position: fixed;
+                width: 87.5vw;
+                height: 85vh;
+                margin-left: 5vw;
+                margin-top: 5vh;
+                padding: 20px;
+            }
+            .modal-header {
+                font-size: 48px;
+                color: green;
+                font-weight: bold;
+                text-align: center;
+                margin: 0;
+            }
+            .modal-label {
+                font-size: 16pt;
+            }
+            .play {
+                width: 50px;
+                height: 50px;
+                border-radius: 25px;
+            }
+            .play-icon {
+                width: 100%;
+                height: 100%;
+            }
+            .nav-option {
+                border-radius: 0;
+                transition-duration: 0.5s;
+            }
+            .selected {
+                border-bottom-style: solid;
+                border-bottom-color: green;
+                border-radius: 0px;
+                border-bottom-width: 2px;
+            }
+            #welcome-title {
+                color: green;
+                font-size: 48pt;
+                text-align: center;
+                font-weight: bold;
+            }
+            #welcome-description {
+                color: green;
+                font-size: 24pt;
+                text-align: center;
+            }
+            #welcome-game {
+                width: 90vw;
+                height: 150px;
+                margin-left: 5vw;
+                background-color: lightgray;
+            }
+            #welcome-icon {
+                width: 125px;
+                height: 125px;
+                margin-top: 10px;
+                margin-right: 10px;
+                float: right;
+                display: inline;
+            }
+            #welcome-game-title {
+                font-size: 48pt;
+                line-height: 240%;
+                margin-left: 25px;
+                font-weight: bold;
+                color: green;
+            }
+            #welcome-play {
+                width: 90%;
+                height: 75px;
+                margin-left: 5%;
+                border-style: none;
+                background-color: green;
+                position: absolute;
+                bottom: 275px;
+                font-size: 22pt;
+            }
+            #welcome-close {
+                width: 90%;
+                height: 75px;
+                margin-left: 5%;
+                border-style: none;
+                background-color: lightgray;
+                position: absolute;
+                bottom: 75px;
+                font-size: 22pt;
+            }
+            #welcome-close-forever {
+                width: 90%;
+                height: 75px;
+                margin-left: 5%;
+                border-style: none;
+                background-color: lightgray;
+                position: absolute;
+                bottom: 175px;
+                font-size: 22pt;
+            }
+            #game {
+                width: 99.7%;
+                height: 82%;
+            }
+            #gaming-modal {
+                height: 96vh;
+            }
+            #exit-game {
+                position: absolute;
+                right: 20px;
+                bottom: 20px;
+            }
+            #edit-modal-content {
+                height: 29vh;
+            }
+            #error-modal-content {
+                width: 50vw;
+                height: 20vh;
+                margin-left: 40vh;
+            }
+            #edit-apply {
+                position: absolute;
+                right: 20px;
+                bottom: 20px;
+            }
+            #edit-cancel {
+                position: absolute;
+                right: 200px;
+                bottom: 20px;
+            }
+            #error-cancel {
+                position: absolute;
+                right: 20px;
+                bottom: 20px;
+            }
+            #question-modal-content {
+                width: 50vw;
+                height: 20vh;
+                margin-left: 40vh;
+            }
+            #interface-color {
+                width: 92%;
+                margin-left: 2%;
+            }
+            #fullscreen-game {
+                position: absolute;
+                left: 20px;
+                bottom: 20px;
+            }
+            #question-cancel {
+                position: absolute;
+                right: 210px;
+                bottom: 20px;
+            }
+            #question-save {
+                position: absolute;
+                right: 20px;
+                bottom: 20px;
+            }
+            #question-revert {
+                position: absolute;
+                left: 20px;
+                bottom: 20px;
+            }
+            #edit-apply {
+                margin-left: 20px;
+            }
+            #font-selector {
+                display: inline;
+                width: 93%;
+                margin-left: 2.5%;
+            }
+            #welcome {
+                position: fixed;
+                background-color: white;
+                opacity: 1;
+                width: 100vw;
+                height: 100vh;
+            }
+            #changelog {
+                position: fixed;
+                background-color: white;
+                opacity: 1;
+                width: 100vw;
+                height: 100vh;
+            }
+            #changelog-close {
+                width: 90%;
+                height: 75px;
+                margin-left: 5%;
+                border-style: none;
+                background-color: lightgray;
+                position: absolute;
+                bottom: 75px;
+                font-size: 22pt;
+            }
+            #preview {
+                font-size: 24pt;
+                line-height: 0;
+                font-weight: bold;
+            }
+            #changelog-title {
+                color: green;
+                font-size: 48pt;
+                text-align: center;
+                font-weight: bold;
+            }
+            #changelog-description {
+                color: green;
+                font-size: 24pt;
+                text-align: center;
+            }
+            #changelog-info {
+                color: green;
+                font-size: 20pt;
+                margin-left: 100px;
+            }
+            #name-modal-content {
+                height: 20vh;
+            }
+            #name {
+                width: 92%;
+            }
+            #name-cancel {
+                position: absolute;
+                bottom: 20px;
+                right: 115px;
+            }
+            #name-submit {
+                position: absolute;
+                bottom: 20px;
+                right: 20px;
+            }
+            #factory-reset-cancel {
+                position: absolute;
+                bottom: 20px;
+                right: 120px;
+            }
+            #factory-reset-submit {
+                position: absolute;
+                bottom: 20px;
+                right: 20px;
+            }
+            #factory-reset-modal-content {
+                height: 18vh;
+                width: 50vw;
+                margin-left: 25vw;
+            }
+            #download-modal-content {
+                height: 18vh;
+                width: 75vw;
+                margin-left: 12.5vw;
+            }
+            #download-cancel {
+                position: absolute;
+                bottom: 20px;
+                right: 155px;
+            }
+            #download-submit {
+                position: absolute;
+                bottom: 20px;
+                right: 20px;
+            }
+            #loading-modal {
+                width: 100vw;
+                height: 100vh;
+                background-color: white;
+            }
+            #loader {
+                width: 0vw;
+                height: 5px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                background-color: green;
+                transition-duration: 0.5s;
+                box-shadow: 2px 2px 8px #777777;
+            }
+            #search {
+                border-bottom-color: gray;
+                margin-left: 5vw;
+            }
+            #search:focus {
+                border-bottom-color: green;
+            }
+            #search-submit {
+                padding: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="loading-modal">
+            <div id="loader"></div>
+        </div>
+        <div id="gaming-modal" class="modal">
+            <div id="gaming-modal-content" class="modal-content">
+                <p id="game-title" class="modal-header">Game</p>
+                <iframe id="game" src=""></iframe>
+                <button id="exit-game" class="list-buttons">Exit</button>
+                <button id="fullscreen-game" class="list-buttons">Fullscreen</button>
+            </div>
+        </div>
+        <div id="download-modal" class="modal">
+            <div id="download-modal-content" class="modal-content">
+                <p id="name-title" class="modal-header">Download Latest Version</p>
+                <br>
+                <label class="modal-label">When prompted, navigate to "easy_gaming" and overwrite the "index.html" file.</label>
+                <br>
+                <br>
+                <br>
+                <button id="download-cancel" class="list-buttons">Cancel</button>
+                <button id="download-submit" class="list-buttons">Download</button>
+            </div>
+        </div>
+        <div id="edit-modal" class="modal">
+            <div id="edit-modal-content" class="modal-content">
+                <p id="edit-title" class="modal-header">Change User Interface</p>
+                <br>
+                <label class="modal-label">Color:</label>
+                <input type="color" id="interface-color">
+                <br>
+                <br>
+                <label class="modal-label">Font:</label>
+                <select id="font-selector">
+                    <option name="sans-serif">Arial - Default</option>
+                    <option disabled>──────────</option>
+                    <option name="American Typewriter">American Typewriter</option>
+                    <option name="Brush Script MT">Brush Script MT</option>
+                    <option name="Chalkduster">Chalkduster</option>
+                    <option name="Comic Sans MS">Comic Sans MS</option>
+                    <option name="courier">Courier</option>
+                    <option name="didot">Didot</option>
+                    <option name="Gill Sans">Gill Sans</option>
+                    <option name="helvetica">Helvetica</option>
+                    <option name="Impact">Impact</option>
+                    <option name="lucidia">Lucidia</option>
+                    <option name="Marker Felt">Marker Felt</option>
+                    <option name="Optima">Optima</option>
+                    <option name="Snell Roundhand">Snell Roundhand</option>
+                    <option name="times">Times New Roman</option>
+                    <option name="verdana">Verdana</option>
+                </select>
+                <br>
+                <br>
+                <p id="preview">Preview</p>
+                <button id="edit-apply" class="list-buttons">Apply Changes</button>
+                <button id="edit-cancel" class="list-buttons">Cancel</button>
+            </div>
+        </div>
+        <div id="error-modal" class="modal">
+            <div id="error-modal-content" class="modal-content">
+                <p id="edit-title" class="modal-header">Connection Error</p>
+                <br>
+                <label class="modal-label">Please check your connection and try again.</label>
+                <br>
+                <br>
+                <br>
+                <button id="error-cancel" class="list-buttons">Close</button>
+            </div>
+        </div>
+        <div id="name-modal" class="modal">
+            <div id="name-modal-content" class="modal-content">
+                <p id="name-title" class="modal-header">Enter Name</p>
+                <br>
+                <label class="modal-label">Name:</label>
+                <input type="text" id="name" placeholder="Enter your name here" autocomplete="off">
+                <br>
+                <br>
+                <br>
+                <button id="name-cancel" class="list-buttons">Ask Me Later</button>
+                <button id="name-submit" class="list-buttons">Done</button>
+            </div>
+        </div>
+        <div id="factory-reset-modal" class="modal">
+            <div id="factory-reset-modal-content" class="modal-content">
+                <p id="name-title" class="modal-header">Confirm Factory Reset</p>
+                <br>
+                <label class="modal-label">Are you sure you want to do a factory reset? All customizations will be lost!</label>
+                <br>
+                <br>
+                <br>
+                <button id="factory-reset-cancel" class="list-buttons">Cancel</button>
+                <button id="factory-reset-submit" class="list-buttons">Reset</button>
+            </div>
+        </div>
+        <div id="question-modal" class="modal">
+            <div id="question-modal-content" class="modal-content">
+                <p id="question-title" class="modal-header">Save Changes</p>
+                <br>
+                <label class="modal-label">Would you like to save these changes to your browser?</label>
+                <br>
+                <br>
+                <br>
+                <button id="question-revert" class="list-buttons" style="visibility: hidden;">Revert To Last Saved Settings</button>
+                <button id="question-cancel" class="list-buttons">Don't Save</button>
+                <button id="question-save" class="list-buttons">Save To Browser</button>
+            </div>
+        </div>
+        <div id="welcome">
+            <p id="welcome-title">Welcome back</p>
+            <p id="welcome-description">Continue where you left off</p>
+            <div id="welcome-game">
+                <img id="welcome-icon">
+                <p id="welcome-game-title">Game</p>
+            </div>
+            <button id="welcome-close-forever">Don't Show Again</button>
+            <button id="welcome-close">Close</button>
+            <button id="welcome-play">Play Game</button>
+        </div>
+        <div id="changelog">
+            <p id="changelog-title">Changelog</p>
+            <p id="changelog-description">Here's what's new in version 1.9.0</p>
+            <p id="changelog-info">&bull; Added last updated gate above.<br>&bull; Added many new games.</p>
+            <button id="changelog-close">Close</button>
+        </div>
+        <div class="title">
+            Easy Gaming
+            <br>
+            <div class="centered inline">
+                <button class="flat nav-option selected">All</button>
+                <button class="flat nav-option">Arcade</button>
+                <button class="flat nav-option">Hacked</button>
+                <button class="flat nav-option">Puzzle</button>
+                <button class="flat nav-option">Racing</button>
+                <button class="flat nav-option">Skill</button>
+                <button class="flat nav-option">Sports</button>
+                <button class="flat nav-option">Strategy</button>
+                <button class="flat nav-option">Misc</button>
+            </div>
+            <input type="text" id="search" placeholder="Search games"> <button id="search-submit">Go</button>
+        </div>
+        <div id="content" class="content">
+            <p id="game-header" class="header">All games:</p>
+            <div id="list">
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button id="interface-button" class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button id="factory-reset-button" class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
+                    <button id="download-button" class="play list-buttons">▷</button>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            var list = document.getElementById('list');
+            var modal = document.getElementById('gaming-modal');
+            var modal2 = document.getElementById('edit-modal');
+            var modal3 = document.getElementById('error-modal');
+            var modal4 = document.getElementById('question-modal');
+            var modal5 = document.getElementById('welcome');
+            var modal6 = document.getElementById('changelog');
+            var modal7 = document.getElementById('name-modal');
+            var modal8 = document.getElementById('factory-reset-modal');
+            var modal9 = document.getElementById('download-modal');
+            var gameTitle = document.getElementById('game-title');
+            var exitButton = document.getElementById('exit-game');
+            var editCancel = document.getElementById('edit-cancel');
+            var editApply = document.getElementById('edit-apply');
+            var editTitle = document.getElementById('edit-title');
+            var errorCancel = document.getElementById('error-cancel');
+            var interfaceColor = document.getElementById('interface-color')
+            var game = document.getElementById('game');
+            var interfaceButton = document.getElementById('interface-button');
+            var fullscreenButton = document.getElementById('fullscreen-game');
+            var fontSelector = document.getElementById('font-selector');
+            var gameHeader = document.getElementById('game-header');
+            var questionCancel = document.getElementById('question-cancel');
+            var questionSave = document.getElementById('question-save');
+            var questionRevert = document.getElementById('question-revert');
+            var loadingModal = document.getElementById('loading-modal');
+            var welcomeTitle = document.getElementById('welcome-title');
+            var welcomeGame = document.getElementById('welcome-game-title');
+            var welcomeIcon = document.getElementById('welcome-icon');
+            var welcomeClose = document.getElementById('welcome-close');
+            var welcomePlay = document.getElementById('welcome-play');
+            var welcomeDescription = document.getElementById('welcome-description');
+            var changelogTitle = document.getElementById('changelog-title');
+            var changelogDescription = document.getElementById('changelog-description');
+            var changelogInfo = document.getElementById('changelog-info');
+            var changelogCancel = document.getElementById('changelog-close');
+            var nameInput = document.getElementById('name');
+            var nameCancel = document.getElementById('name-cancel');
+            var nameSubmit = document.getElementById('name-submit');
+            var welcomeDontShowAgain = document.getElementById('welcome-close-forever');
+            var loader = document.getElementById('loader');
+            var factoryResetCancel = document.getElementById('factory-reset-cancel');
+            var factoryResetSubmit = document.getElementById('factory-reset-submit');
+            var search = document.getElementById('search');
+            var searchSubmit = document.getElementById('search-submit');
+            var downloadCancel = document.getElementById('download-cancel');
+            var downloadSubmit = document.getElementById('download-submit');
+
+            var playButtons = document.getElementsByClassName('play');
+            var listItems = document.getElementsByClassName('list-item');
+            var listTitles = document.getElementsByClassName('list-title');
+            var listIcons = document.getElementsByClassName('list-icon');
+            var listDescriptions = document.getElementsByClassName('list-description');
+            var titles = document.getElementsByClassName('title');
+            var buttons = document.getElementsByTagName('button');
+            var fontOptions = document.getElementsByClassName('font-option');
+            var modalHeaders = document.getElementsByClassName('modal-header');
+            var loaderParts = document.getElementsByClassName('loader');
+            var navOptions = document.getElementsByClassName('nav-option');
+            var body = document.getElementsByTagName('body')[0];
+
+            var date = new Date();
+            var delayInSeconds = 2;
+            var loaderWidthTotal = 0;
+
+            var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            var gameIcons = [
+                'http://icons.iconarchive.com/icons/google/noto-emoji-activities/1024/52739-bowling-icon.png',
+                'https://upload.wikimedia.org/wikipedia/en/0/0a/Flappy_Bird_icon.png',
+                'https://upload.wikimedia.org/wikipedia/en/0/0a/Flappy_Bird_icon.png',
+                'http://icons.iconarchive.com/icons/tatice/cristal-intense/256/Tetris-icon.png',
+                'https://www.stmaryriverside.org/cms/lib/IL50000027/Centricity/Domain/80/JVfootball.png',
+                'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Soccerball.svg/1024px-Soccerball.svg.png',
+                'https://upload.wikimedia.org/wikipedia/en/1/1e/Baseball_%28crop%29.jpg',
+                'https://cdn3.iconfinder.com/data/icons/brain-games/1042/Tic-Tac-Toe-Game-red.png',
+                'http://a970.phobos.apple.com/us/r30/Purple/v4/ee/26/fd/ee26fd5b-b169-a9f2-fa77-b0d519dd595e/mzl.bvljsuuh.png',
+                'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Basketball.png/220px-Basketball.png',
+                'https://is5-ssl.mzstatic.com/image/thumb/Purple125/v4/fb/26/9f/fb269f9d-1a54-ab47-7046-99e215ffb298/AppIcon-1x_U007emarketing-85-220-8.png/246x0w.jpg',
+                'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/ChessSet.jpg/250px-ChessSet.jpg',
+                'https://is1-ssl.mzstatic.com/image/thumb/Purple118/v4/6b/2d/8d/6b2d8dc7-8470-582e-68f5-dde9bc96b960/source/512x512bb.jpg',
+                'https://upload.wikimedia.org/wikipedia/commons/6/64/2048_Screenshot.png',
+                'https://upload.wikimedia.org/wikipedia/commons/6/64/2048_Screenshot.png',
+                'https://upload.wikimedia.org/wikipedia/commons/6/64/2048_Screenshot.png',
+                'https://cdn1.vectorstock.com/i/thumb-large/38/70/flag-golf-hole-icon-vector-14353870.jpg',
+                'https://cdn.vox-cdn.com/thumbor/14JFM1X5LFrP235M2ApCP5JAN6g=/75x0:885x540/1200x800/filters:focal(75x0:885x540)/cdn.vox-cdn.com/uploads/chorus_image/image/34656663/super_mario_bros.0.png',
+                'https://hackster.imgix.net/uploads/attachments/431013/snake_dvlfwCony2.png?auto=compress&w=900&h=675&fit=min&fm=jpg',
+                'https://assets.pcmag.com/media/images/466302-quizlet-logo.png?width=250&height=250',
+                'https://splaygame.com/wp-content/uploads/2016/10/Furious-Racing-3D-icon.png',
+                'http://www.toyhalloffame.org/sites/www.toyhalloffame.org/files/toys/square/domino-square_0.png',
+                'https://www.cyberbotics.com/blockly/ca9ee11/appengine/apple-touch-icon.png',
+                'https://is2-ssl.mzstatic.com/image/thumb/Purple71/v4/36/76/2a/36762ade-b1ca-dbb6-ee9c-69b03ad345d6/source/512x512bb.jpg',
+                'https://www.hicodenver.com/wp-content/uploads/2016/09/5-qualatex-latex-round-balloon-wild-berry.jpg',
+                'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/UNO_Logo.svg/1200px-UNO_Logo.svg.png',
+                'https://images-na.ssl-images-amazon.com/images/I/81ILFLJHfkL._SL1500_.jpg',
+                'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Basketball.png/220px-Basketball.png',
+                'https://is2-ssl.mzstatic.com/image/thumb/Purple62/v4/9f/25/90/9f25908b-e657-d840-3767-4b2a7aa0ceca/source/512x512bb.jpg',
+                'https://kokoa.io/sites/default/files/styles/product-cover/public/products/b419522c-76a2-4465-a584-dcaf1f85d7c9_79.jpg?itok=iQAmVip2',
+                'https://images-na.ssl-images-amazon.com/images/I/51VK-6oME5L._SY355_.png',
+                'http://web.pdx.edu/~kherb2/project2-simon-game/images/simon-1.png',
+                'https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Pac_Man.svg/200px-Pac_Man.svg.png',
+                'https://playcasino.palacasino.com/wp-content/themes/palacasino/images/games/blackjack.png',
+                'https://pbs.twimg.com/profile_images/1048281391270690816/kF6iyMAO_400x400.jpg',
+                'https://qiboq322762phj4o1hjdbvjw-wpengine.netdna-ssl.com/wp-content/uploads/2017/02/reflector-screenshot.png',
+                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2sZG5LIFCpAZ3o49ffntdPbwmTF5mjBbL-2xAVNzWCH4-CEfQ-w:pimg.p30download.com/APK_IMG/a/com.AndroAppsLabs.android.Sky_Rush_Unity3D_Android_Sky_in_ice_Simulator_WWW_Winter_Sky_Run_games3D/icon/icon_0_small.png',
+                'http://is5.mzstatic.com/image/thumb/Purple122/v4/e7/35/c4/e735c411-4a1b-c274-eb79-b336a9cea6b6/source/512x512bb.jpg',
+                'https://cdn.sparkfun.com//assets/parts/6/5/5/4/11118-01.jpg',
+                'https://www.cyberbotics.com/blockly/ca9ee11/appengine/apple-touch-icon.png',
+                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSshBbr8LEmKOwtTiFfhnME37LNL4beqAftGJwnl5vziPSNkwPs:https://www.shareicon.net/download/2016/08/18/808851_moon.svg',
+                'https://www.westonpubliclibrary.org/main/wp-content/uploads/pirate-cartoon.png',
+                'https://images-na.ssl-images-amazon.com/images/I/41tg9EEffxL._SL500_AC_SS350_.jpg',
+                'https://pbs.twimg.com/profile_images/697164567269548033/qGb2P92c_400x400.png',
+                'https://lh3.googleusercontent.com/rl4xk5xJi6FkyWwZgt6B53WhbD9AfA98N3TfJqbFHruDLky4ZIpZFaht4pGObijmJQ',
+                'https://images-na.ssl-images-amazon.com/images/I/41tg9EEffxL._SL500_AC_SS350_.jpg',
+                'https://www.cpp.edu/~jrfisher/www/prolog_tutorial/f2_3.gif',
+                'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Pixel_51_icon_cursor_click_top_right.svg/2000px-Pixel_51_icon_cursor_click_top_right.svg.png',
+                'https://www.techsupportalert.com/files/images/Reversi-Evaluation-full.jpg',
+                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqKCElfqAUODbBgi54kFoBhMqnG6OPlgqjgvf09-diYXoEPq3X:https://i.ytimg.com/vi/obegONrq7K0/maxresdefault.jpg',
+                'https://images-na.ssl-images-amazon.com/images/I/61HC1-GHCAL._SY355_.png',
+                'http://icons-for-free.com/free-icons/png/512/306932.png',
+                'http://www.rw-designer.com/icon-image/5547-256x256x8.png',
+                'http://icons.iconarchive.com/icons/martz90/hex/256/game-tower-defense-come2us-icon.png',
+                'https://cdn1.iconfinder.com/data/icons/game-21/32/Line_love-relationship-heart-health-512.png',
+                'https://images-na.ssl-images-amazon.com/images/I/91SfPYITE-L._SY355_.png',
+                'https://s3.envato.com/files/238420640/thumbs/200x200.jpg',
+                'https://images-na.ssl-images-amazon.com/images/I/81AU81JZhjL._SY355_.png',
+                'https://lh3.ggpht.com/qR11nyAfl6VSRFJE3gPl2I75FbYaBRPQClmN2nihHFKrLSEpjN8BV29F2aA8C1yMsZA',
+                'https://d22blwhp6neszm.cloudfront.net/23/229782/Screenshot_21.png',
+                'http://store-images.s-microsoft.com/image/apps.63462.13510798883013861.8e8ba07a-9036-429d-92a5-cb52ff400ae8.b46cf867-448d-422c-9edb-8b15ca63c825',
+                'https://images-na.ssl-images-amazon.com/images/I/81%2BK-M%2BrS1L._SY355_.png',
+                'http://is2.mzstatic.com/image/pf/us/r30/Purple2/v4/dd/f0/15/ddf0156d-970f-c76d-65de-27c11a116286/mzl.gscqtazy.png',
+                'https://images-na.ssl-images-amazon.com/images/I/71L9YDutf-L.png',
+                // Divider
+                'https://www.w3schools.com/colors/img_colormap.gif',
+                'https://cdn1.iconfinder.com/data/icons/business-finance-18/512/Feedback_Like_Positive_Message_Communication_Success_Thumbsup_1-512.png',
+                'http://icons.iconarchive.com/icons/graphicloads/100-flat-2/256/arrow-download-icon.png',
+                'http://blog.backupify.com/wp-content/uploads/2012/10/System-Restore.png'
+            ];
+            var gameInfo = {
+                'Bowling': 'Roll a ball to knock down pins and earn points!',
+                'Flappy Bird': 'Guide the bird through the pipes. How many points can you get?',
+                'Hacked Flappy Bird': 'Mess around with a hacked version of Flappy Bird!',
+                'Tetris Flash': 'Build blocks to earn points. If you make a line of blocks, the game deletes that row.',
+                'Football Kicks': 'Skillfully kick the football into the target!',
+                'Flicking Soccer': 'Flick the ball into the opponent\'s goal!',
+                'Baseball Pro': 'Try your luck with this fun baseball game! How many home runs can you make?',
+                'Tic Tac Toe': 'The classic game where you must get three in a row to win.',
+                'Car Rush': 'Race a car in a map and try to beat the timer!',
+                'Ultimate Swish': 'Shoot as many balls into the hoop as possible!',
+                'Master Checkers': 'Take as many checkers away from your opponent as possible to win!',
+                'Master Chess': 'The classic strategy game!',
+                'Bubble Shooter [HOT]': 'Shoot the bubbles to win!',
+                '2048!': 'Get 2 numbers together to increase value. Keep going until there are no moves left!',
+                'Flappy 2048': 'Flappy bird, but in a 2048 grid! Hitboxes are flexible, so it isn\'t as hard as you think.',
+                'Hacked 2048!': 'This version has an AI which automatically moves the cubes around!',
+                'Mini Golf World': 'Shoot the ball and aim for the cup!',
+                'Super Mario Bros.': 'The classic, retro platformer game! Can you save the princess?',
+                'Snake': 'The classic Atari game is now in your browser! Avoid running into yourself and collect as many dots as you can!',
+                'Fortnite Map Locations': 'Match the names with the parts on the map to win! How fast can you go?',
+                'Slot Car Racing': 'Race a car!',
+                'Domino Block': 'Try to use all your dominoes to win!',
+                'Blockly Coding': 'Using blocks, code an amazing program! Simple to understand, no errors, and requires no typing.',
+                'City Blocks': 'A fun game that\'s all about timing! Can you build the highest tower?',
+                'Balloon Pop': 'This game is extremely rigged. I can\'t seem to win this game, can you?',
+                '4 Colors': 'An Uno-based game, where you must run out of cards!',
+                'Bell Sound': 'Trick teachers with the fake bell sound!',
+                'Street Shot': 'A basketball-based game. How many shots can you get?',
+                'Whack \'em All': 'This game is based off Whack-a-Mole. Great game for when you are mad at something!',
+                'Kahoot!': 'The fun website where you can join a game and play! Please note that there must be a code to join a game.',
+                'Jigsaw Puzzles': 'Put together puzzles!',
+                'Simon': 'Memorize the colors to win!',
+                'Pacman': 'The classic retro arcade game!',
+                'Blackjack': 'A popular card game played in most casinos! How many times can you beat the dealer?',
+                'Kahoot! Smasher': 'Load tons of bots into Kahoot! servers! Very fun to do!',
+                'Reflector': 'A fun game where you must reflect the light to the target!',
+                'Ski Rush': 'Ski your way down the mountain to win!',
+                'Brick Out': 'Just like the title suggests, shoots the bricks out to win!',
+                'Lights': 'Connect all the lights to win!',
+                'Blockly Games': 'The fun Blockly games are here! Code your way to win all the challenges!',
+                'X-Moon 2: Dark Moon': 'Follow on-screen instructions to play this fun pixel retro game! Z is Button 1, and X is Button 2.',
+                'Pirate Adventure': 'Guide a pirate to collect all the coins and avoid being chopped by the enemies!',
+                'Jumper Frog': 'Based on the classic arcade game Frogger. Guide the frog to the other side to win!',
+                'Tronix': 'Arrange the lines to make them not touch! Challenging but fun puzzle game!',
+                'Power Blocks': 'Arrange the blocks to fill the square and win!',
+                'Clever Frog': 'Guide a frog on lily pads to win!',
+                'Tower Of Hanoi': 'A challenge where you must complete a puzzle in the fewest amount of moves!',
+                'Click Speed Test': 'See how fast you can click with this test!',
+                'Reversi': 'The classic board game!',
+                'Sorcerer': 'Match the colored balls to win!',
+                'Pyramid Solitaire': 'The fun card game where you must put card in order to win!',
+                'Piano': 'Play the piano online!',
+                'Minecraft Creative Mode': 'Build structures in this knock-off Minecraft game!',
+                'Tower Defense': 'A 3D version of Bloons Tower Defense!',
+                'Heartline': 'A 2 player game where you must guide your character through the levels!',
+                'Drift Hunters': 'How well can you drift a car?',
+                'Nugget Adventure': 'Mine in the mine and collect all the golden nuggets to win! Hurry though, angry miners are after you!',
+                'Snakes And Ladders': 'The vintage game is now in your browser! Can you make it to the top?',
+                'Spot The Difference': 'Exactly what the title suggests - spot the difference to win!',
+                'New Soccer': 'The "new" soccer!',
+                '2 Player Car Racing': 'Race, but with 2 players!',
+                'Neon Hockey': 'Air hockey, but it\'s neon!',
+                'Ninja War 1': 'Go fight ninjas to win!',
+                'Jumpy Car': 'As the name suggests, jump your car to win!',
+                // Divider
+                'Change interface': 'Customize the gaming interface!',
+                'Suggest games': 'Want a game on this site? Suggest games here!',
+                'Download new version': 'Downloads an HTML file. Save it as the original file in the folder!',
+                'Factory reset': 'WARNING! Factory reset deletes your name, last played game data, color and font data, and other data.'
+            };
+            var gameGenres = {
+                'Bowling': ['sports'],
+                'Flappy Bird': ['skill', 'arcade'],
+                'Hacked Flappy Bird': ['hacked', 'arcade'],
+                'Tetris Flash': ['arcade', 'skill'],
+                'Football Kicks': ['sports', 'skill'],
+                'Flicking Soccer': ['sports'],
+                'Baseball Pro': ['sports'],
+                'Tic Tac Toe': ['strategy'],
+                'Car Rush': ['racing', 'arcade'],
+                'Ultimate Swish': ['sports'],
+                'Master Checkers': ['strategy'],
+                'Master Chess': ['strategy'],
+                'Bubble Shooter [HOT]': ['strategy', 'puzzle'],
+                '2048!': ['puzzle', 'strategy'],
+                'Flappy 2048': ['skill'],
+                'Hacked 2048!': ['hacked', 'arcade'],
+                'Mini Golf World': ['skill', 'sports'],
+                'Super Mario Bros.': ['arcade', 'skill'],
+                'Snake': ['arcade', 'skill'],
+                'Fortnite Map Locations': ['skill'],
+                'Slot Car Racing': ['racing', 'skill'],
+                'Domino Block': ['strategy'],
+                'Blockly Coding': ['skill'],
+                'City Blocks': ['arcade', 'skill'],
+                'Balloon Pop': ['strategy'],
+                '4 Colors': ['strategy', 'skill'],
+                'Bell Sound': ['misc'],
+                'Street Shot': ['sports', 'skill'],
+                'Whack \'em All': ['arcade', 'skill'],
+                'Kahoot!': ['skill'],
+                'Jigsaw Puzzles': ['puzzle'],
+                'Simon': ['arcade', 'skill'],
+                'Pacman': ['arcade', 'skill'],
+                'Blackjack': ['skill'],
+                'Kahoot! Smasher': ['hacked'],
+                'Reflector': ['strategy'],
+                'Ski Rush': ['sports', 'skill'],
+                'Brick Out': ['arcade', 'skill'],
+                'Lights': ['strategy'],
+                'Blockly Games': ['strategy', 'skill'],
+                'X-Moon 2: Dark Moon': ['arcade', 'strategy'],
+                'Pirate Adventure': ['strategy', 'skill'],
+                'Jumper Frog': ['arcade', 'skill'],
+                'Tronix': ['strategy'],
+                'Power Blocks': ['arcade', 'skill'],
+                'Clever Frog': ['strategy'],
+                'Tower Of Hanoi': ['strategy'],
+                'Click Speed Test': ['skill'],
+                'Reversi': ['strategy'],
+                'Sorcerer': ['strategy', 'skill'],
+                'Pyramid Solitaire': ['strategy'],
+                'Piano': ['Misc'],
+                'Minecraft Creative Mode': ['arcade'],
+                'Tower Defense': ['strategy'],
+                'Heartline': ['arcade', 'skill'],
+                'Drift Hunters': ['racing', 'skill'],
+                'Nugget Adventure': ['strategy', 'skill'],
+                'Snakes And Ladders': ['strategy'],
+                'New Soccer': ['sports', 'skill'],
+                'Spot The Difference': ['skill', 'puzzle'],
+                '2 Player Car Racing': ['racing', 'skill'],
+                'Neon Hockey': ['skill'],
+                'Ninja War 1': ['strategy', 'skill'],
+                'Jumpy Car': ['racing', 'skill'],
+                // Divider
+                'Change interface': ['misc'],
+                'Suggest games': ['misc'],
+                'Download new version': ['misc'],
+                'Factory reset': ['misc']
+            };
+            var gameLinks = {
+                'Bowling': 'https://ilibrarian.net/games/bowling/',
+                'Flappy Bird': 'http://s3-eu-west-1.amazonaws.com/apps.playcanvas.com/TAhlQLDa/index.html',
+                'Hacked Flappy Bird': 'https://xviniette.github.io/FlappyLearning/',
+                'Tetris Flash': 'https://ilibrarian.net/games/tetris/',
+                'Football Kicks': 'https://ilibrarian.net/games/football-kicks/',
+                'Flicking Soccer': 'https://ilibrarian.net/games/flicking-soccer/',
+                'Baseball Pro': 'https://ilibrarian.net/games/baseball-pro/',
+                'Tic Tac Toe': 'https://www.ilibrarian.net/games/tic-tac-toe/',
+                'Car Rush': 'https://ilibrarian.net/games/car-rush/',
+                'Ultimate Swish': 'https://ilibrarian.net/games/ultimate-swish/',
+                'Master Checkers': 'https://www.ilibrarian.net/games/checkers/',
+                'Master Chess': 'https://www.ilibrarian.net/games/master-chess/',
+                'Bubble Shooter [HOT]': 'https://www.ilibrarian.net/games/bubble-shooter/',
+                '2048!': 'http://hczhcz.github.io/2048/20ez/',
+                'Flappy 2048': 'https://hczhcz.github.io/Flappy-2048/',
+                'Hacked 2048!': 'http://aj-r.github.io/2048-AI/',
+                'Mini Golf World': 'https://ilibrarian.net/games/mini-golf/',
+                'Super Mario Bros.': 'http://mix.bid/a/mario/',
+                'Snake': 'https://www.echalk.co.uk/amusements/Games/snake/snake.html',
+                'Fortnite Map Locations': 'https://quizlet.com/355771681/match/embed?i=1hfwd0&x=1jj1',
+                'Slot Car Racing': 'https://ilibrarian.net/games/slot-car/',
+                'Domino Block': 'https://ilibrarian.net/games/domino/',
+                'Blockly Coding': 'https://blockly-demo.appspot.com/static/demos/code/index.html',
+                'City Blocks': 'https://ilibrarian.net/games/city-blocks/',
+                'Balloon Pop': 'https://ilibrarian.net/games/math-pop/',
+                '4 Colors': 'https://ilibrarian.net/games/four-colors/',
+                'Bell Sound': 'https://vocaroo.com/i/s0jw3kay2Kn6',
+                'Street Shot': 'https://ilibrarian.net/games/street-shot/',
+                'Whack \'em All': 'https://www.ilibrarian.net/games/whack-em-all/',
+                'Kahoot!': 'https://kahoot.it/',
+                'Jigsaw Puzzles': 'https://ilibrarian.net/games/jigsaw/',
+                'Simon': 'https://www.echalk.co.uk/amusements/Games/Simon/simon.html',
+                'Pacman': 'https://www.echalk.co.uk/amusements/Games/Pacman/pacman.html',
+                'Blackjack': 'https://www.echalk.co.uk/Maths/blackJack/blackjack.htm',
+                'Kahoot! Smasher': 'chrome-extension://jegbdfehmmeclcliadfdjbbpmhcjgclk/backup/index.html',
+                'Reflector': 'https://ilibrarian.net/games/reflector/',
+                'Ski Rush': 'https://ilibrarian.net/games/ski-rush/',
+                'Brick Out': 'https://ilibrarian.net/games/brick-out/',
+                'Lights': 'https://ilibrarian.net/games/lights/',
+                'Blockly Games': 'https://blockly-games.appspot.com/',
+                'X-Moon 2: Dark Moon': 'https://v6p9d9t4.ssl.hwcdn.net/html/548693/index.html?v=1542784589',
+                'Pirate Adventure': 'https://ilibrarian.net/games/pirate-adventure/',
+                'Jumper Frog': 'https://ilibrarian.net/games/jumper-frog/',
+                'Tronix': 'https://ilibrarian.net/games/tronix/',
+                'Power Blocks': 'https://ilibrarian.net/games/power-blocks/',
+                'Clever Frog': 'https://ilibrarian.net/games/clever-frog/',
+                'Tower Of Hanoi': 'https://www.echalk.co.uk/Maths/towerOfHanoi/Hanoi.html',
+                'Click Speed Test': 'https://www.click-test.com/',
+                'Reversi': 'https://ilibrarian.net/games/reversi/',
+                'Sorcerer': 'https://ilibrarian.net/games/sorcerer/',
+                'Pyramid Solitaire': 'https://ilibrarian.net/games/pyramid-solitaire/',
+                'Piano': 'https://www.felipefialho.com/piano/',
+                'Minecraft Creative Mode': 'http://nurgak.github.io/Cube-engine/',
+                'Tower Defense': 'http://www.fellicht.nl/games/tower-defense/',
+                'Heartline': 'http://heartline.github.io/#',
+                'Drift Hunters': 'https://v6p9d9t4.ssl.hwcdn.net/html/435707/ItchIO/index.html',
+                'Nugget Adventure': 'https://ilibrarian.net/games/nugget-adventure/',
+                'Snakes And Ladders': 'https://demonisblack.com/code/snakesandladders/game/',
+                'Spot The Difference': 'http://demonisblack.com/code/spotthedifferences/game/',
+                'New Soccer': 'https://demonisblack.com/code/newsoccer/game/',
+                '2 Player Car Racing': 'https://cgfxsrilanka.net/Demo/2%20Players%20Car%20Race%20(Dual%20Screen)/index.html',
+                'Neon Hockey': 'http://th.techdynamics.org/neonhockey/',
+                'Ninja War 1': 'http://th.techdynamics.org/ninjawar1/',
+                'Jumpy Car': 'http://th.techdynamics.org/jumpycar/',
+                // Divider
+                'Change interface': '',
+                'Suggest games': 'https://docs.google.com/forms/d/e/1FAIpQLScy-7OSje-PbgjufCyUMO5vwOhwbbj4j843GwVs4-WxI_FWwQ/viewform?usp=sf_link',
+                'Download new version': '',
+                'Factory reset': ''
+            };
+
+            function fullscreen() {
+                if (document.fullscreenEnabled || document.webkitFullscreenEnabled || document.mozFullScreenEnabled || document.msFullscreenEnabled) {
+                    if (game.requestFullscreen) {
+                        game.requestFullscreen();
+                    } else if (game.webkitRequestFullscreen) {
+                        game.webkitRequestFullscreen();
+                    } else if (game.mozRequestFullScreen) {
+                        game.mozRequestFullScreen();
+                    } else if (game.msRequestFullscreen) {
+                        game.msRequestFullscreen();
+                    }
+                }
+            }
+
+            for (var i = 0; i < navOptions.length; i++) {
+                navOptions[i].addEventListener('click', function(e) {
+                    for (var i2 = 0; i2 < navOptions.length; i2++) {
+                        navOptions[i2].classList.remove('selected');
+                    }
+                    e.target.classList.add('selected');
+                    gameHeader.textContent = e.target.textContent + ' games:';
+                    search.value = '';
+                    if (!(e.target.textContent.toLowerCase() == 'all')) {
+                        for (var i2 = 0; i2 < listTitles.length; i2++) {
+                            listTitles[i2].parentElement.style.display = 'none';
+                            for (var i3 = 0; i3 < gameGenres[listTitles[i2].textContent].length; i3++) {
+                                if (gameGenres[listTitles[i2].textContent][i3] == e.target.textContent.toLowerCase()) {
+                                    listItems[i2].style.display = 'block';
+                                }
+                            }
+                        }
+                    } else {
+                        for (var i2 = 0; i2 < listTitles.length; i2++) {
+                            listTitles[i2].parentElement.style.display = 'block';
+                        }
+                    }
+                }, false);
+            }
+            for (var i = 0; i < playButtons.length; i++) {
+                listTitles[i].textContent = Object.keys(gameInfo)[i];
+                listDescriptions[i].textContent = Object.values(gameInfo)[i];
+                listIcons[i].src = gameIcons[i];
+                playButtons[i].setAttribute('data-index', i + '');
+                listIcons[i].addEventListener('load', function() {
+                    loaderWidthTotal = loaderWidthTotal + (100 / listIcons.length);
+                    loader.style.width = loaderWidthTotal + 'vw';
+                    if (loaderWidthTotal >= 99.5) {
+                        setTimeout(function() {
+                            loadingModal.style.width = '0vw';
+                            loadingModal.style.height = '0vh';
+                            loader.style.opacity = 0;
+                            runChecks();
+                            setTimeout(function() {
+                                loader.style.width = '0vw';
+                            }, 500);
+                        }, 600);
+                    }
+                }, false);
+                playButtons[i].addEventListener('click', function(e) {
+                    loadingModal.style.display = 'block';
+                    if (navigator.onLine) {
+                        loader.style.opacity = 1;
+                        loader.style.width = '100vw';
+                        setTimeout(function() {
+                            loadingModal.style.width = '0vw';
+                            loadingModal.style.height = '0vh';
+                            loader.style.opacity = 0;
+                            setTimeout(function() {
+                                loader.style.width = '0vw';
+                            }, 500);
+                            var name = e.target.parentElement.childNodes[3].textContent;
+                            if (name == 'Change interface') {
+                                modal2.style.display = 'block';
+                            } else if (name == 'Factory reset') {
+                                modal8.style.display = 'block';
+                            } else if (name == 'Download new version') {
+                                modal9.style.display = 'block';
+                            } else {
+                                modal.style.display = 'block';
+                                gameTitle.textContent = name;
+                                game.src = gameLinks[name];
+                                if (window.localStorage) {
+                                    localStorage.lastGamePlayed = name;
+                                    localStorage.lastGameIcon = e.target.parentElement.childNodes[1].getAttribute('src');
+                                }
+                            }
+                        }, 600);
+                    } else {
+                        setTimeout(function() {
+                            if (loadingModal.style.display == 'block') {
+                                loadingModal.style.opacity = 0;
+                                modal3.style.display = 'block';
+                            }
+                        }, 10);
+                    }
+                }, false);
+            }
+
+            modal.style.display = 'none';
+            modal2.style.display = 'none';
+            modal3.style.display = 'none';
+            modal4.style.display = 'none';
+            modal7.style.display = 'none';
+            modal8.style.display = 'none';
+            modal9.style.display = 'none';
+            changelogDescription.textContent = changelogDescription.textContent + ' - updated on ' + months[date.getMonth()]  + ' ' + date.getDay() + ', ' + date.getFullYear();
+
+            function runChecks() {
+                if (window.localStorage) {
+                    if (localStorage.dontShowWelcomeAgain) {
+                        modal5.style.display = 'none';
+                    }
+                    if (!(localStorage.gameName)) {
+                        modal7.style.display = 'block';
+                    } else {
+                        welcomeTitle.textContent = 'Welcome back, ' + localStorage.gameName;
+                    }
+                    if (localStorage.seenChangelog) {
+                        modal6.style.display = 'none';
+                    } else {
+                        modal6.style.display = 'block';
+                        localStorage.seenChangelog = true;
+                    }
+                    if (!(localStorage.lastGamePlayed && localStorage.lastGameIcon)) {
+                        modal5.style.display = 'none';
+                    } else {
+                        welcomeGame.textContent = localStorage.lastGamePlayed;
+                        welcomeIcon.src = localStorage.lastGameIcon;
+                    }
+                    if (localStorage.gamingInterfaceTextColor) {
+                        interfaceColor.value = localStorage.gamingInterfaceTextColor;
+                    }
+                    if (localStorage.gamingInterfaceFont) {
+                        fontSelector.value = localStorage.gamingInterfaceFont;
+                    }
+                    if (localStorage.gamingInterfaceFont && localStorage.gamingInterfaceTextColor) {
+                        gameTitle.style.color = interfaceColor.value;
+                        gameTitle.style.fontFamily = fontSelector.value;
+                        gameHeader.style.color = interfaceColor.value;
+                        gameHeader.style.fontFamily = fontSelector.value;
+                        editTitle.style.color = interfaceColor.value;
+                        editTitle.style.fontFamily = fontSelector.value;
+                        preview.style.color = interfaceColor.value;
+                        preview.style.fontFamily = fontSelector.value;
+                        welcomePlay.style.backgroundColor = interfaceColor.value;
+                        welcomeTitle.style.color = interfaceColor.value;
+                        welcomeTitle.style.fontFamily = fontSelector.value;
+                        welcomeDescription.style.color = interfaceColor.value;
+                        welcomeDescription.style.fontFamily = fontSelector.value;
+                        welcomeGame.style.color = interfaceColor.value;
+                        welcomeGame.style.fontFamily = fontSelector.value;
+                        changelogTitle.style.color = interfaceColor.value;
+                        changelogTitle.style.fontFamily = fontSelector.value;
+                        changelogDescription.style.color = interfaceColor.value;
+                        changelogDescription.style.fontFamily = fontSelector.value;
+                        changelogInfo.style.color = interfaceColor.value;
+                        changelogInfo.style.fontFamily = fontSelector.value;
+                        nameInput.style.borderBottomColor = interfaceColor.value;
+                        search.style.borderBottomColor = interfaceColor.value;
+                        loader.style.backgroundColor = interfaceColor.value;
+                        searchSubmit.style.backgroundColor = interfaceColor.value;
+                        for (var i = 0; i < navOptions.length; i++) {
+                            navOptions[i].style.borderBottomColor = interfaceColor.value;
+                            navOptions[i].style.color = interfaceColor.value;
+                            navOptions[i].style.fontFamily = fontSelector.value;
+                        }
+                        for (var i = 0; i < loaderParts.length; i++) {
+                            loaderParts[i].style.backgroundColor = interfaceColor.value;
+                        }
+                        for (var i = 0; i < modalHeaders.length; i++) {
+                            modalHeaders[i].style.color = interfaceColor.value;
+                            modalHeaders[i].style.fontFamily = fontSelector.value;
+                        }
+                        for (var i = 0; i < listItems.length; i++) {
+                            listItems[i].style.borderTopColor = interfaceColor.value;
+                        }
+                        for (var i = 0; i < titles.length; i++) {
+                            titles[i].style.color = interfaceColor.value;
+                            titles[i].style.fontFamily = fontSelector.value;
+                        }
+                        for (var i = 0; i < listTitles.length; i++) {
+                            listTitles[i].style.color = interfaceColor.value;
+                            listTitles[i].style.fontFamily = fontSelector.value;
+                        }
+                    }
+                } else {
+                    modal7.style.display = 'none';
+                }
+            }
+
+            search.addEventListener('input', function() {
+                var searchResults = false;
+                for (var i = 0; i < navOptions.length; i++) {
+                    navOptions[i].classList.remove('selected');
+                }
+                navOptions[0].classList.add('selected');
+                for (var i = 0; i < listTitles.length; i++) {
+                    if (listTitles[i].textContent.toLowerCase().indexOf(search.value.toLowerCase()) > -1) {
+                        listTitles[i].parentElement.style.display = 'block';
+                        searchResults = true;
+                    } else {
+                        listTitles[i].parentElement.style.display = 'none';
+                    }
+                }
+                if (search.value.length == 0) {
+                    gameHeader.textContent = 'All games:';
+                } else if (searchResults) {
+                    gameHeader.textContent = 'Results for "' + search.value + '":';
+                } else {
+                    gameHeader.textContent = 'No results for "' + search.value + '."';
+                }
+            }, false);
+            factoryResetSubmit.addEventListener('click', function() {
+                delete localStorage.dontShowWelcomeAgain;
+                delete localStorage.gameName;
+                delete localStorage.gamingInterfaceFont;
+                delete localStorage.gamingInterfaceTextColor;
+                delete localStorage.lastGameIcon;
+                delete localStorage.lastGamePlayed;
+                delete localStorage.seenChangelog;
+                window.location.reload();
+            }, false);
+            downloadCancel.addEventListener('click', function() {
+                modal9.style.display = 'none';
+            }, false);
+            downloadSubmit.addEventListener('click', function() {
+                modal9.style.display = 'none';
+                loadingModal.style.display = 'block';
+                loader.style.width = '50vw';
+                var http = new XMLHttpRequest();
+                http.onreadystatechange = function() {
+                    if (http.readyState == 4 && http.status == 200) {
+                        var element = document.createElement('a');
+                        element.style.display = 'none';
+                        element.setAttribute('href', 'data:text/html,' + encodeURIComponent(http.responseText));
+                        element.setAttribute('download', 'index.html');
+                        document.body.appendChild(element);
+                        element.click();
+                        document.body.removeChild(element);
+                        delete http;
+                        loader.style.width = '100vw';
+                        setTimeout(function() {
+                            loadingModal.style.display = 'none';
+                        }, 500);
+                        setTimeout(function() {
+                            loader.style.width = '0vw';
+                        }, 1000);
+                    }
+                };
+                http.open('GET', 'https://raw.githubusercontent.com/PixelatedMC/Easy-Gaming/master/easy_gaming/index.html');
+                http.send();
+            }, false);
+            factoryResetCancel.addEventListener('click', function() {
+                modal8.style.display = 'none';
+            }, false);
+            welcomeDontShowAgain.addEventListener('click', function() {
+                modal5.style.display = 'none';
+                localStorage.dontShowWelcomeAgain = true;
+            }, false);
+            nameCancel.addEventListener('click', function() {
+                modal7.style.display = 'none';
+                nameInput.value = '';
+            }, false);
+            nameSubmit.addEventListener('click', function() {
+                modal7.style.display = 'none';
+                localStorage.gameName = nameInput.value;
+                nameInput.value = '';
+            }, false);
+            changelogCancel.addEventListener('click', function() {
+                modal6.style.display = 'none';
+            }, false);
+            welcomePlay.addEventListener('click', function() {
+                modal5.style.display = 'none';
+                loadingModal.style.display = 'block';
+                loader.style.opacity = 1;
+                loader.style.width = '100vw';
+                setTimeout(function() {
+                    loadingModal.style.width = '0vw';
+                    loadingModal.style.height = '0vh';
+                    loader.style.opacity = 0;
+                    setTimeout(function() {
+                        loader.style.width = '0vw';
+                    }, 500);
+                    if (navigator.onLine) {
+                        var name = localStorage.lastGamePlayed;
+                        gameTitle.textContent = name;
+                        game.src = gameLinks[name];
+                        modal.style.display = 'block';
+                    } else {
+                        if (loadingModal.style.display == 'block') {
+                            xhttp.abort();
+                            delete xhttp;
+                            modal3.style.display = 'block';
+                        }
+                    }
+                }, 600);
+            }, false);
+            welcomeClose.addEventListener('click', function() {
+                modal5.style.display = 'none';
+            }, false);
+            exitButton.addEventListener('click', function() {
+                modal.style.display = 'none';
+                game.src = '';
+            }, false);
+            /*
+            interfaceButton.addEventListener('click', function() {
+                setTimeout(function() {
+                    modal2.style.display = 'block';
+                }, delayInSeconds * 1000);
+            }, false);
+            */
+            editCancel.addEventListener('click', function() {
+                modal2.style.display = 'none';
+            }, false);
+            questionCancel.addEventListener('click', function() {
+                modal4.style.display = 'none';
+            }, false);
+            questionRevert.addEventListener('click', function() {
+                modal4.style.display = 'none';
+                interfaceColor.value = localStorage.gamingInterfaceTextColor;
+                fontSelector.value = localStorage.gamingInterfaceFont;
+                gameTitle.style.color = interfaceColor.value;
+                gameTitle.style.fontFamily = fontSelector.value;
+                gameHeader.style.color = interfaceColor.value;
+                gameHeader.style.fontFamily = fontSelector.value;
+                editTitle.style.color = interfaceColor.value;
+                editTitle.style.fontFamily = fontSelector.value;
+                preview.style.color = interfaceColor.value;
+                preview.style.fontFamily = fontSelector.value;
+                welcomePlay.style.backgroundColor = interfaceColor.value;
+                welcomeTitle.style.color = interfaceColor.value;
+                welcomeTitle.style.fontFamily = fontSelector.value;
+                welcomeDescription.style.color = interfaceColor.value;
+                welcomeDescription.style.fontFamily = fontSelector.value;
+                welcomeGame.style.color = interfaceColor.value;
+                welcomeGame.style.fontFamily = fontSelector.value;
+                changelogTitle.style.color = interfaceColor.value;
+                changelogTitle.style.fontFamily = fontSelector.value;
+                changelogDescription.style.color = interfaceColor.value;
+                changelogDescription.style.fontFamily = fontSelector.value;
+                changelogInfo.style.color = interfaceColor.value;
+                changelogInfo.style.fontFamily = fontSelector.value;
+                loader.style.backgroundColor = interfaceColor.value;
+                search.style.borderBottomColor = interfaceColor.value;
+                searchSubmit.style.backgroundColor = interfaceColor.value;
+                for (var i = 0; i < navOptions.length; i++) {
+                    navOptions[i].style.borderBottomColor = interfaceColor.value;
+                    navOptions[i].style.color = interfaceColor.value;
+                    navOptions[i].style.fontFamily = fontSelector.value;
+                }
+                for (var i = 0; i < listItems.length; i++) {
+                    listItems[i].style.borderTopColor = interfaceColor.value;
+                }
+                for (var i = 0; i < loaderParts.length; i++) {
+                    loaderParts[i].style.backgroundColor = interfaceColor.value;
+                }
+                for (var i = 0; i < titles.length; i++) {
+                    titles[i].style.color = interfaceColor.value;
+                    titles[i].style.fontFamily = fontSelector.value;
+                }
+                for (var i = 0; i < listTitles.length; i++) {
+                    listTitles[i].style.color = interfaceColor.value;
+                    listTitles[i].style.fontFamily = fontSelector.value;
+                }
+                for (var i = 0; i < modalHeaders.length; i++) {
+                    modalHeaders[i].style.color = interfaceColor.value;
+                    modalHeaders[i].style.fontFamily = fontSelector.value;
+                }
+            }, false);
+            questionSave.addEventListener('click', function() {
+                modal4.style.display = 'none';
+                localStorage.gamingInterfaceTextColor = interfaceColor.value;
+                localStorage.gamingInterfaceFont = fontSelector.value;
+            }, false);
+            editApply.addEventListener('click', function() {
+                modal2.style.display = 'none';
+                gameTitle.style.color = interfaceColor.value;
+                gameTitle.style.fontFamily = fontSelector.value;
+                gameHeader.style.color = interfaceColor.value;
+                gameHeader.style.fontFamily = fontSelector.value;
+                editTitle.style.color = interfaceColor.value;
+                editTitle.style.fontFamily = fontSelector.value;
+                preview.style.color = interfaceColor.value;
+                preview.style.fontFamily = fontSelector.value;
+                welcomePlay.style.backgroundColor = interfaceColor.value;
+                welcomeTitle.style.color = interfaceColor.value;
+                welcomeTitle.style.fontFamily = fontSelector.value;
+                welcomeDescription.style.color = interfaceColor.value;
+                welcomeDescription.style.fontFamily = fontSelector.value;
+                welcomeGame.style.color = interfaceColor.value;
+                welcomeGame.style.fontFamily = fontSelector.value;
+                changelogTitle.style.color = interfaceColor.value;
+                changelogTitle.style.fontFamily = fontSelector.value;
+                changelogDescription.style.color = interfaceColor.value;
+                changelogDescription.style.fontFamily = fontSelector.value;
+                changelogInfo.style.color = interfaceColor.value;
+                changelogInfo.style.fontFamily = fontSelector.value;
+                loader.style.backgroundColor = interfaceColor.value;
+                search.style.borderBottomColor = interfaceColor.value;
+                searchSubmit.style.backgroundColor = interfaceColor.value;
+                for (var i = 0; i < navOptions.length; i++) {
+                    navOptions[i].style.borderBottomColor = interfaceColor.value;
+                    navOptions[i].style.color = interfaceColor.value;
+                    navOptions[i].style.fontFamily = fontSelector.value;
+                }
+                for (var i = 0; i < listItems.length; i++) {
+                    listItems[i].style.borderTopColor = interfaceColor.value;
+                }
+                for (var i = 0; i < loaderParts.length; i++) {
+                    loaderParts[i].style.backgroundColor = interfaceColor.value;
+                }
+                for (var i = 0; i < titles.length; i++) {
+                    titles[i].style.color = interfaceColor.value;
+                    titles[i].style.fontFamily = fontSelector.value;
+                }
+                for (var i = 0; i < listTitles.length; i++) {
+                    listTitles[i].style.color = interfaceColor.value;
+                    listTitles[i].style.fontFamily = fontSelector.value;
+                }
+                for (var i = 0; i < modalHeaders.length; i++) {
+                    modalHeaders[i].style.color = interfaceColor.value;
+                    modalHeaders[i].style.fontFamily = fontSelector.value;
+                }
+                if (window.localStorage) {
+                    if (localStorage.gamingInterfaceTextColor && localStorage.gamingInterfaceFont) {
+                        questionRevert.style.visibility = 'visible';
+                    }
+                    modal4.style.display = 'block';
+                }
+            }, false);
+            interfaceColor.addEventListener('change', function() {
+                preview.style.color = interfaceColor.value;
+                preview.style.fontFamily = fontSelector.value;
+            }, false);
+            fontSelector.addEventListener('change', function() {
+                preview.style.color = interfaceColor.value;
+                preview.style.fontFamily = fontSelector.value;
+            }, false);
+            errorCancel.addEventListener('click', function() {
+                modal3.style.display = 'none';
+                loadingModal.style.display = 'block';
+            }, false);
+            fullscreenButton.addEventListener('click', fullscreen, false);
+        </script>
+    </body>
+</html>
