@@ -1,0 +1,1 @@
+1.10.0 - &bull; Added automatic updates. &bull; Added notifications.
