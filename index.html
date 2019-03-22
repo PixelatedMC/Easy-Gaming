@@ -1183,7 +1183,6 @@
             var downloadSubmit = document.getElementById('download-submit');
             var downloadInfo = document.getElementById('download-info');
             var snackbar = document.getElementById('snackbar');
-            var snackbarButton = document.getElementById('download-open');
 
             var playButtons = document.getElementsByClassName('play');
             var listItems = document.getElementsByClassName('list-item');
@@ -1723,7 +1722,7 @@
                                     return;
                                 }
                                 downloadInfo.innerHTML = 'Here\'s what\'s in version ' + version + ':<br><br>' + information + '<br><br>To download, click "Download" below. When prompted, overwrite the previous "index.html" file in the website folder.';
-                                snackbar.innerHTML = 'Version ' + version + ' is now available. Get it <a href="#" id="download-open">here</a>.';
+                                snackbar.innerHTML = 'Version ' + version + ' is now available. Get it at the "Download new version" button.';
                                 snackbar.className = 'show';
                                 setTimeout(function() {
                                     snackbar.className = snackbar.className.replace('show', '');
@@ -1817,10 +1816,6 @@
             }, false);
             changelogCancel.addEventListener('click', function() {
                 modal6.style.display = 'none';
-            }, false);
-            snackbarButton.addEventListener('click', function() {
-                modal.style.display = 'none';
-                modal9.style.display = 'block';
             }, false);
             welcomePlay.addEventListener('click', function() {
                 modal5.style.display = 'none';
