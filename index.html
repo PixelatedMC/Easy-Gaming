@@ -8,10 +8,6 @@
                 color: black;
                 font-family: sans-serif;
             }
-            @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-            }
             @-webkit-keyframes sk-stretchdelay {
               0%, 40%, 100% { -webkit-transform: scaleY(0.4) }  
               20% { -webkit-transform: scaleY(1.0) }
@@ -20,10 +16,26 @@
               0%, 40%, 100% { 
                 transform: scaleY(0.4);
                 -webkit-transform: scaleY(0.4);
-              }  20% { 
+              }  20% {
                 transform: scaleY(1.0);
                 -webkit-transform: scaleY(1.0);
               }
+            }
+            @-webkit-keyframes fadein {
+              from {bottom: 0; opacity: 0;} 
+              to {bottom: 30px; opacity: 1;}
+            }
+            @keyframes fadein {
+              from {bottom: 0; opacity: 0;}
+              to {bottom: 30px; opacity: 1;}
+            }
+            @-webkit-keyframes fadeout {
+              from {bottom: 30px; opacity: 1;} 
+              to {bottom: 0; opacity: 0;}
+            }
+            @keyframes fadeout {
+              from {bottom: 30px; opacity: 1;}
+              to {bottom: 0; opacity: 0;}
             }
             body {
                 overflow-y: hidden;
@@ -502,7 +514,7 @@
                 margin-left: 25vw;
             }
             #download-modal-content {
-                height: 18vh;
+                height: 40vh;
                 width: 75vw;
                 margin-left: 12.5vw;
             }
@@ -541,12 +553,36 @@
             #search-submit {
                 padding: 5px;
             }
+            #snackbar {
+                visibility: hidden;
+                min-width: 250px;
+                margin-left: -125px;
+                background-color: #333;
+                color: #fff;
+                text-align: center;
+                border-radius: 2px;
+                padding: 16px;
+                position: fixed;
+                z-index: 1;
+                left: 50%;
+                bottom: 30px;
+            }
+            #snackbar.show {
+                visibility: visible;
+                -webkit-animation: fadein 0.5s, fadeout 0.5s 7.5s;
+                animation: fadein 0.5s, fadeout 0.5s 7.5s;
+            }
+            #download-open {
+                color: lightblue;
+                font-size: 13pt;
+            }
         </style>
     </head>
     <body>
         <div id="loading-modal">
             <div id="loader"></div>
         </div>
+        <div id="snackbar">A new version is now available.</div>
         <div id="gaming-modal" class="modal">
             <div id="gaming-modal-content" class="modal-content">
                 <p id="game-title" class="modal-header">Game</p>
@@ -559,7 +595,7 @@
             <div id="download-modal-content" class="modal-content">
                 <p id="name-title" class="modal-header">Download Latest Version</p>
                 <br>
-                <label class="modal-label">When prompted, navigate to "easy_gaming" and overwrite the "index.html" file.</label>
+                <label id="download-info" class="modal-label">When prompted, navigate to "easy_gaming" and overwrite the "index.html" file.</label>
                 <br>
                 <br>
                 <br>
@@ -664,8 +700,8 @@
         </div>
         <div id="changelog">
             <p id="changelog-title">Changelog</p>
-            <p id="changelog-description">Here's what's new in version 1.9.0</p>
-            <p id="changelog-info">&bull; Added last updated gate above.<br>&bull; Added many new games.</p>
+            <p id="changelog-description">Loading current information...</p>
+            <p id="changelog-info"></p>
             <button id="changelog-close">Close</button>
         </div>
         <div class="title">
@@ -1145,6 +1181,9 @@
             var searchSubmit = document.getElementById('search-submit');
             var downloadCancel = document.getElementById('download-cancel');
             var downloadSubmit = document.getElementById('download-submit');
+            var downloadInfo = document.getElementById('download-info');
+            var snackbar = document.getElementById('snackbar');
+            var snackbarButton = document.getElementById('download-open');
 
             var playButtons = document.getElementsByClassName('play');
             var listItems = document.getElementsByClassName('list-item');
@@ -1162,6 +1201,7 @@
             var date = new Date();
             var delayInSeconds = 2;
             var loaderWidthTotal = 0;
+            var currentVersion = '1.10.0';
 
             var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
             var gameIcons = [
@@ -1525,7 +1565,23 @@
                             } else if (name == 'Factory reset') {
                                 modal8.style.display = 'block';
                             } else if (name == 'Download new version') {
+                                var http4 = new XMLHttpRequest();
+                                http4.onreadystatechange = function() {
+                                    if (http4.readyState == 4 && http4.status == 200) {
+                                        var data = http4.responseText;
+                                        var version = data.split(' - ')[0];
+                                        var information = data.split(' - ')[1];
+                                        if (version == currentVersion) {
+                                            downloadInfo.innerHTML = 'Here\'s what\'s in current version ' + version + ':<br><br>' + information + '<br><br>To download again, click "Download" below. When prompted, overwrite the previous "index.html" file in the website folder.';
+                                        } else {
+                                            downloadInfo.innerHTML = 'Here\'s what\'s new in version ' + version + ':<br><br>' + information + '<br><br>To download, click "Download" below. When prompted, overwrite the previous "index.html" file in the website folder.';
+                                        }
+                                    }
+                                };
+                                http4.open('GET', 'https://raw.githubusercontent.com/PixelatedMC/Easy-Gaming/master/version-info-updated.html');
+                                http4.send();
                                 modal9.style.display = 'block';
+                                
                             } else {
                                 modal.style.display = 'block';
                                 gameTitle.textContent = name;
@@ -1557,6 +1613,24 @@
             changelogDescription.textContent = changelogDescription.textContent + ' - updated on ' + months[date.getMonth()]  + ' ' + date.getDay() + ', ' + date.getFullYear();
 
             function runChecks() {
+                if (navigator.onLine) {
+                    var http3 = new XMLHttpRequest();
+                    http3.onreadystatechange = function() {
+                        if (http3.readyState == 4 && http3.status == 200) {
+                            var data = http3.responseText;
+                            var version = data.split(' - ')[0];
+                            var information = data.split(' - ')[1];
+                            if (version == currentVersion) {
+                                changelogDescription.textContent = 'Here\'s what\'s in the current version ' + version + ' - updated on ' + months[date.getMonth()]  + ' ' + date.getDay() + ', ' + date.getFullYear();
+                            } else {
+                                changelogDescription.textContent = 'Here\'s what\'s in the updated version ' + version + ' - updated on ' + months[date.getMonth()]  + ' ' + date.getDay() + ', ' + date.getFullYear();
+                            }
+                            changelogInfo.innerHTML = information;
+                        }
+                    };
+                    http3.open('GET', 'https://raw.githubusercontent.com/PixelatedMC/Easy-Gaming/master/version-info-updated.html');
+                    http3.send();
+                }
                 if (window.localStorage) {
                     if (localStorage.dontShowWelcomeAgain) {
                         modal5.style.display = 'none';
@@ -1637,6 +1711,30 @@
                 } else {
                     modal7.style.display = 'none';
                 }
+                var interval = setInterval(function() {
+                    if (navigator.onLine) {
+                        var http2 = new XMLHttpRequest();
+                        http2.onreadystatechange = function() {
+                            if (http2.readyState == 4 && http2.status == 200) {
+                                var data = http2.responseText;
+                                var version = data.split(' - ')[0];
+                                var information = data.split(' - ')[1];
+                                if (version == currentVersion) {
+                                    return;
+                                }
+                                downloadInfo.innerHTML = 'Here\'s what\'s in version ' + version + ':<br><br>' + information + '<br><br>To download, click "Download" below. When prompted, overwrite the previous "index.html" file in the website folder.';
+                                snackbar.innerHTML = 'Version ' + version + ' is now available. Get it <a href="#" id="download-open">here</a>.';
+                                snackbar.className = 'show';
+                                setTimeout(function() {
+                                    snackbar.className = snackbar.className.replace('show', '');
+                                }, 8000);
+                                clearInterval(interval);
+                            }
+                        };
+                        http2.open('GET', 'https://raw.githubusercontent.com/PixelatedMC/Easy-Gaming/master/version-info-updated.html');
+                        http2.send();
+                    }
+                }, 10000);
             }
 
             search.addEventListener('input', function() {
@@ -1720,6 +1818,10 @@
             changelogCancel.addEventListener('click', function() {
                 modal6.style.display = 'none';
             }, false);
+            snackbarButton.addEventListener('click', function() {
+                modal.style.display = 'none';
+                modal9.style.display = 'block';
+            }, false);
             welcomePlay.addEventListener('click', function() {
                 modal5.style.display = 'none';
                 loadingModal.style.display = 'block';
@@ -1753,13 +1855,6 @@
                 modal.style.display = 'none';
                 game.src = '';
             }, false);
-            /*
-            interfaceButton.addEventListener('click', function() {
-                setTimeout(function() {
-                    modal2.style.display = 'block';
-                }, delayInSeconds * 1000);
-            }, false);
-            */
             editCancel.addEventListener('click', function() {
                 modal2.style.display = 'none';
             }, false);
