@@ -576,6 +576,12 @@
                 color: lightblue;
                 font-size: 13pt;
             }
+            #title-version {
+                line-height: 1;
+                width: 100vw;
+                height: 0;
+                color: green;
+            }
         </style>
     </head>
     <body>
@@ -705,7 +711,9 @@
             <button id="changelog-close">Close</button>
         </div>
         <div class="title">
-            Easy Gaming
+            <div id="title-version">
+                Easy Gaming
+            </div>
             <br>
             <div class="centered inline">
                 <button class="flat nav-option selected">All</button>
@@ -1183,6 +1191,7 @@
             var downloadSubmit = document.getElementById('download-submit');
             var downloadInfo = document.getElementById('download-info');
             var snackbar = document.getElementById('snackbar');
+            var titleVersion = document.getElementById('title-version');
 
             var playButtons = document.getElementsByClassName('play');
             var listItems = document.getElementsByClassName('list-item');
@@ -1200,7 +1209,7 @@
             var date = new Date();
             var delayInSeconds = 2;
             var loaderWidthTotal = 0;
-            var currentVersion = '1.12.0';
+            var currentVersion = '1.12.5';
 
             var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
             var gameIcons = [
@@ -1610,6 +1619,7 @@
             modal7.style.display = 'none';
             modal8.style.display = 'none';
             modal9.style.display = 'none';
+            titleVersion.textContent = 'Easy Gaming V' + currentVersion;
             changelogDescription.textContent = changelogDescription.textContent + ' - updated on ' + months[date.getMonth()]  + ' ' + date.getDay() + ', ' + date.getFullYear();
 
             function runChecks() {
@@ -1622,6 +1632,7 @@
                             var information = data.split(' - ')[1];
                             if (version == currentVersion) {
                                 changelogDescription.textContent = 'Here\'s what\'s in the current version ' + version + ' - updated on ' + months[date.getMonth()]  + ' ' + date.getDay() + ', ' + date.getFullYear();
+                                
                             } else {
                                 changelogDescription.textContent = 'Here\'s what\'s in the updated version ' + version + ' - updated on ' + months[date.getMonth()]  + ' ' + date.getDay() + ', ' + date.getFullYear();
                             }
@@ -1684,6 +1695,8 @@
                         search.style.borderBottomColor = interfaceColor.value;
                         loader.style.backgroundColor = interfaceColor.value;
                         searchSubmit.style.backgroundColor = interfaceColor.value;
+                        titleVersion.style.color = interfaceColor.value;
+                        titleVersion.style.fontFamily = fontSelector.value;
                         for (var i = 0; i < navOptions.length; i++) {
                             navOptions[i].style.borderBottomColor = interfaceColor.value;
                             navOptions[i].style.color = interfaceColor.value;
@@ -1885,6 +1898,8 @@
                 loader.style.backgroundColor = interfaceColor.value;
                 search.style.borderBottomColor = interfaceColor.value;
                 searchSubmit.style.backgroundColor = interfaceColor.value;
+                titleVersion.style.color = interfaceColor.value;
+                titleVersion.style.fontFamily = fontSelector.value;
                 for (var i = 0; i < navOptions.length; i++) {
                     navOptions[i].style.borderBottomColor = interfaceColor.value;
                     navOptions[i].style.color = interfaceColor.value;
@@ -1940,6 +1955,8 @@
                 loader.style.backgroundColor = interfaceColor.value;
                 search.style.borderBottomColor = interfaceColor.value;
                 searchSubmit.style.backgroundColor = interfaceColor.value;
+                titleVersion.style.color = interfaceColor.value;
+                titleVersion.style.fontFamily = fontSelector.value;
                 for (var i = 0; i < navOptions.length; i++) {
                     navOptions[i].style.borderBottomColor = interfaceColor.value;
                     navOptions[i].style.color = interfaceColor.value;
