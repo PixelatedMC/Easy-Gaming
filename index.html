@@ -1565,13 +1565,14 @@
                                 modal8.style.display = 'block';
                             } else if (name == 'Download new version') {
                                 var http4 = new XMLHttpRequest();
+                                downloadInfo.textContent = 'Loading data...';
                                 http4.onreadystatechange = function() {
                                     if (http4.readyState == 4 && http4.status == 200) {
                                         var data = http4.responseText;
                                         var version = data.split(' - ')[0];
                                         var information = data.split(' - ')[1];
                                         if (version == currentVersion) {
-                                            downloadInfo.innerHTML = 'Here\'s what\'s in current version ' + version + ':<br><br>' + information + '<br><br>To download again, click "Download" below. When prompted, overwrite the previous "index.html" file in the website folder.';
+                                            downloadInfo.innerHTML = 'Here\'s what\'s in current version ' + version + ':<br><br>' + information + '<br><br>You already have the newest version. To download again, click "Download" below. When prompted, overwrite the previous "index.html" file in the website folder.';
                                         } else {
                                             downloadInfo.innerHTML = 'Here\'s what\'s new in version ' + version + ':<br><br>' + information + '<br><br>To download, click "Download" below. When prompted, overwrite the previous "index.html" file in the website folder.';
                                         }
