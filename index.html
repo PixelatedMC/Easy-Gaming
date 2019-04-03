@@ -3,6 +3,7 @@
     <head>
         <title>Easy Gaming</title>
         <link rel="icon" href="images/logo.png" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100" />
         <style type="text/css">
             * {
                 color: black;
@@ -303,6 +304,30 @@
                 border-radius: 0px;
                 border-bottom-width: 2px;
             }
+            .footer {
+                position: fixed;
+                right: 0;
+                bottom: 0;
+                width: 100vw;
+                height: 150px;
+                background-color: lightgray;
+                color: white;
+                text-align: center;
+                vertical-align: middle;
+                font-size: 24pt;
+                z-index: 0;
+            }
+            .voice {
+                height: 115px;
+                width: 115px;
+                margin-top: 10px;
+                margin-right: 10px;
+                background-color: #45AB8D;
+                border-radius: 50%;
+                display: inline-block;
+                cursor: pointer;
+                transition-duration: 0.5s;
+            }
             #welcome-title {
                 color: green;
                 font-size: 48pt;
@@ -342,7 +367,7 @@
                 border-style: none;
                 background-color: green;
                 position: absolute;
-                bottom: 275px;
+                bottom: 175px;
                 font-size: 22pt;
             }
             #welcome-close {
@@ -582,6 +607,36 @@
                 height: 0;
                 color: green;
             }
+            #mic-icon {
+                width: 50%;
+                height: 50%;
+                margin: 25%;
+            }
+            #active-voice {
+                position: absolute;
+                right: 20px;
+                top: 10px;
+                background-color: lightgray;
+            }
+            #activated-footer {
+                background-color: green;
+                display: none;
+            }
+            #voice-prompt {
+                line-height: 2.3;
+                color: white;
+                font-weight: lighter;
+                font-size: 48pt;
+                font-family: 'Roboto', sans-serif;
+            }
+            #footer {
+                background-color: black;
+                width: 1px;
+                height: 1px;
+                left: 46.5%;
+                right: 50%;
+                bottom: 150px;
+            }
         </style>
     </head>
     <body>
@@ -700,7 +755,6 @@
                 <img id="welcome-icon">
                 <p id="welcome-game-title">Game</p>
             </div>
-            <button id="welcome-close-forever">Don't Show Again</button>
             <button id="welcome-close">Close</button>
             <button id="welcome-play">Play Game</button>
         </div>
@@ -710,6 +764,21 @@
             <p id="changelog-info"></p>
             <button id="changelog-close">Close</button>
         </div>
+        <!--
+        <div id="activated-footer" class="footer">
+            <b id="voice-prompt">Say the name of a game.</b>
+            <div id="active-voice" class="voice">
+                <img id="mic-icon" src="images/mic-icon.png">
+                <div id="loader"></div>
+            </div>
+        </div>
+        <div id="footer" class="footer">
+            <div id="voice" class="voice">
+                <img id="mic-icon" src="images/mic-icon.png">
+                <div id="loader"></div>
+            </div>
+        </div>
+        -->
         <div class="title">
             <div id="title-version">
                 Easy Gaming
@@ -1181,7 +1250,6 @@
             var nameInput = document.getElementById('name');
             var nameCancel = document.getElementById('name-cancel');
             var nameSubmit = document.getElementById('name-submit');
-            var welcomeDontShowAgain = document.getElementById('welcome-close-forever');
             var loader = document.getElementById('loader');
             var factoryResetCancel = document.getElementById('factory-reset-cancel');
             var factoryResetSubmit = document.getElementById('factory-reset-submit');
@@ -1192,6 +1260,11 @@
             var downloadInfo = document.getElementById('download-info');
             var snackbar = document.getElementById('snackbar');
             var titleVersion = document.getElementById('title-version');
+            /*var footer = document.getElementById('footer');
+            var activatedFooter = document.getElementById('activated-footer');
+            var voice = document.getElementById('voice');
+            var activeVoice = document.getElementById('active-voice');
+            var voicePrompt = document.getElementById('voice-prompt');*/
 
             var playButtons = document.getElementsByClassName('play');
             var listItems = document.getElementsByClassName('list-item');
@@ -1209,7 +1282,10 @@
             var date = new Date();
             var delayInSeconds = 2;
             var loaderWidthTotal = 0;
+            var gamesPlayed = 0;
             var currentVersion = '1.12.5';
+            var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            var recognition = new SpeechRecognition();
 
             var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
             var gameIcons = [
@@ -1279,6 +1355,7 @@
                 'https://images-na.ssl-images-amazon.com/images/I/71L9YDutf-L.png',
                 // Divider
                 'https://www.w3schools.com/colors/img_colormap.gif',
+                'https://cdn1.iconfinder.com/data/icons/business-finance-18/512/Feedback_Like_Positive_Message_Communication_Success_Thumbsup_1-512.png',
                 'https://cdn1.iconfinder.com/data/icons/business-finance-18/512/Feedback_Like_Positive_Message_Communication_Success_Thumbsup_1-512.png',
                 'http://icons.iconarchive.com/icons/graphicloads/100-flat-2/256/arrow-download-icon.png',
                 'http://blog.backupify.com/wp-content/uploads/2012/10/System-Restore.png'
@@ -1351,6 +1428,7 @@
                 // Divider
                 'Change interface': 'Customize the gaming interface!',
                 'Suggest games': 'Want a game on this site? Suggest games here!',
+                'Give feedback': 'Give us feedback here! It only takes a minute to do.',
                 'Download new version': 'Downloads an HTML file. Save it as the original file in the folder!',
                 'Factory reset': 'WARNING! Factory reset deletes your name, last played game data, color and font data, and other data.'
             };
@@ -1422,6 +1500,7 @@
                 // Divider
                 'Change interface': ['misc'],
                 'Suggest games': ['misc'],
+                'Give feedback': ['misc'],
                 'Download new version': ['misc'],
                 'Factory reset': ['misc']
             };
@@ -1493,6 +1572,7 @@
                 // Divider
                 'Change interface': '',
                 'Suggest games': 'https://docs.google.com/forms/d/e/1FAIpQLScy-7OSje-PbgjufCyUMO5vwOhwbbj4j843GwVs4-WxI_FWwQ/viewform?usp=sf_link',
+                'Give feedback': 'https://docs.google.com/forms/d/e/1FAIpQLSe-uyE-UQxeFHlEoW_slPxv0QOY4ZN2jgxdZb5WNA1Ki3hpMQ/viewform?usp=sf_link',
                 'Download new version': '',
                 'Factory reset': ''
             };
@@ -1541,7 +1621,7 @@
                 listIcons[i].src = gameIcons[i];
                 playButtons[i].setAttribute('data-index', i + '');
                 listIcons[i].addEventListener('load', function() {
-                    loaderWidthTotal = loaderWidthTotal + (100 / listIcons.length);
+                    loaderWidthTotal = loaderWidthTotal + (100 / listIcons.length) + 0.1;
                     loader.style.width = loaderWidthTotal + 'vw';
                     if (loaderWidthTotal >= 99.5) {
                         setTimeout(function() {
@@ -1595,6 +1675,7 @@
                                 modal.style.display = 'block';
                                 gameTitle.textContent = name;
                                 game.src = gameLinks[name];
+                                gamesPlayed++;
                                 if (window.localStorage) {
                                     localStorage.lastGamePlayed = name;
                                     localStorage.lastGameIcon = e.target.parentElement.childNodes[1].getAttribute('src');
@@ -1621,7 +1702,7 @@
             modal9.style.display = 'none';
             titleVersion.textContent = 'Easy Gaming V' + currentVersion;
             changelogDescription.textContent = changelogDescription.textContent + ' - updated on ' + months[date.getMonth()]  + ' ' + date.getDay() + ', ' + date.getFullYear();
-
+            
             function runChecks() {
                 if (navigator.onLine) {
                     var http3 = new XMLHttpRequest();
@@ -1697,6 +1778,11 @@
                         searchSubmit.style.backgroundColor = interfaceColor.value;
                         titleVersion.style.color = interfaceColor.value;
                         titleVersion.style.fontFamily = fontSelector.value;
+                        /*
+                        voice.style.backgroundColor = interfaceColor.value;
+                        activeVoice.style.backgroundColor = interfaceColor.value;
+                        activatedFooter.style.backgroundColor = interfaceColor.value;
+                        */
                         for (var i = 0; i < navOptions.length; i++) {
                             navOptions[i].style.borderBottomColor = interfaceColor.value;
                             navOptions[i].style.color = interfaceColor.value;
@@ -1736,6 +1822,7 @@
                                     return;
                                 }
                                 downloadInfo.innerHTML = 'Here\'s what\'s in version ' + version + ':<br><br>' + information + '<br><br>To download, click "Download" below. When prompted, overwrite the previous "index.html" file in the website folder.';
+                                snackbar.style.left = '45vw';
                                 snackbar.innerHTML = 'Version ' + version + ' is now available. Get it at the "Download new version" button.';
                                 snackbar.className = 'show';
                                 setTimeout(function() {
@@ -1749,7 +1836,7 @@
                     }
                 }, 10000);
             }
-
+            
             search.addEventListener('input', function() {
                 var searchResults = false;
                 for (var i = 0; i < navOptions.length; i++) {
@@ -1800,6 +1887,7 @@
                         element.click();
                         document.body.removeChild(element);
                         delete http;
+                        delete localStorage.seenChangelog;
                         loader.style.width = '100vw';
                         setTimeout(function() {
                             loadingModal.style.display = 'none';
@@ -1814,10 +1902,6 @@
             }, false);
             factoryResetCancel.addEventListener('click', function() {
                 modal8.style.display = 'none';
-            }, false);
-            welcomeDontShowAgain.addEventListener('click', function() {
-                modal5.style.display = 'none';
-                localStorage.dontShowWelcomeAgain = true;
             }, false);
             nameCancel.addEventListener('click', function() {
                 modal7.style.display = 'none';
@@ -1863,6 +1947,14 @@
             exitButton.addEventListener('click', function() {
                 modal.style.display = 'none';
                 game.src = '';
+                if (gamesPlayed == 3) {
+                    snackbar.style.left = '40vw';
+                    snackbar.textContent = 'Enjoy this website? You can always show support by giving us feedback.';
+                    snackbar.className = 'show';
+                    setTimeout(function() {
+                        snackbar.className = snackbar.className.replace('show', '');
+                    }, 8000);
+                }
             }, false);
             editCancel.addEventListener('click', function() {
                 modal2.style.display = 'none';
@@ -1870,6 +1962,14 @@
             questionCancel.addEventListener('click', function() {
                 modal4.style.display = 'none';
             }, false);
+            /*
+            voice.addEventListener('click', function() {
+                footer.style.display = 'none';
+                activatedFooter.style.display = 'block';
+                voicePrompt.textContent = 'Please say a game name.';
+                recognition.start();
+            }, false);
+            */
             questionRevert.addEventListener('click', function() {
                 modal4.style.display = 'none';
                 interfaceColor.value = localStorage.gamingInterfaceTextColor;
@@ -1900,6 +2000,11 @@
                 searchSubmit.style.backgroundColor = interfaceColor.value;
                 titleVersion.style.color = interfaceColor.value;
                 titleVersion.style.fontFamily = fontSelector.value;
+                /*
+                voice.style.backgroundColor = interfaceColor.value;
+                activeVoice.style.backgroundColor = interfaceColor.value;
+                activatedFooter.style.backgroundColor = interfaceColor.value;
+                */
                 for (var i = 0; i < navOptions.length; i++) {
                     navOptions[i].style.borderBottomColor = interfaceColor.value;
                     navOptions[i].style.color = interfaceColor.value;
@@ -1957,6 +2062,11 @@
                 searchSubmit.style.backgroundColor = interfaceColor.value;
                 titleVersion.style.color = interfaceColor.value;
                 titleVersion.style.fontFamily = fontSelector.value;
+                /*
+                voice.style.backgroundColor = interfaceColor.value;
+                activeVoice.style.backgroundColor = interfaceColor.value;
+                activatedFooter.style.backgroundColor = interfaceColor.value;
+                */
                 for (var i = 0; i < navOptions.length; i++) {
                     navOptions[i].style.borderBottomColor = interfaceColor.value;
                     navOptions[i].style.color = interfaceColor.value;
