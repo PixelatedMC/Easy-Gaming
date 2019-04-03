@@ -1200,6 +1200,12 @@
                     <img class="list-icon" />
                     <p class="list-title">Game</p>
                     <p class="list-description">Game description</p>
+                    <button class="play list-buttons">▷</button>
+                </div>
+                <div class="list-item">
+                    <img class="list-icon" />
+                    <p class="list-title">Game</p>
+                    <p class="list-description">Game description</p>
                     <button id="factory-reset-button" class="play list-buttons">▷</button>
                 </div>
                 <div class="list-item">
@@ -1888,6 +1894,7 @@
                         document.body.removeChild(element);
                         delete http;
                         delete localStorage.seenChangelog;
+                        delete localStorage.lastGamePlayed;
                         loader.style.width = '100vw';
                         setTimeout(function() {
                             loadingModal.style.display = 'none';
