@@ -1289,7 +1289,7 @@
             var delayInSeconds = 2;
             var loaderWidthTotal = 0;
             var gamesPlayed = 0;
-            var currentVersion = '1.13.5';
+            var currentVersion = '1.14.0';
             var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             var recognition = new SpeechRecognition();
 
@@ -1678,6 +1678,9 @@
                                 modal9.style.display = 'block';
                                 
                             } else {
+                                if (name == 'Give feedback') {
+                                    localStorage.gaveFeedback = true;
+                                }
                                 modal.style.display = 'block';
                                 gameTitle.textContent = name;
                                 game.src = gameLinks[name];
@@ -1873,6 +1876,7 @@
                 delete localStorage.lastGameIcon;
                 delete localStorage.lastGamePlayed;
                 delete localStorage.seenChangelog;
+                delete localStorage.gaveFeedback;
                 window.location.reload();
             }, false);
             downloadCancel.addEventListener('click', function() {
@@ -1895,6 +1899,7 @@
                         delete http;
                         delete localStorage.seenChangelog;
                         delete localStorage.lastGamePlayed;
+                        delete localStorage.gaveFeedback;
                         loader.style.width = '100vw';
                         setTimeout(function() {
                             loadingModal.style.display = 'none';
