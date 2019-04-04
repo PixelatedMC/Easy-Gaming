@@ -1289,7 +1289,7 @@
             var delayInSeconds = 2;
             var loaderWidthTotal = 0;
             var gamesPlayed = 0;
-            var currentVersion = '1.14.0';
+            var currentVersion = '1.15.0';
             var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             var recognition = new SpeechRecognition();
 
@@ -1346,7 +1346,7 @@
                 'https://www.techsupportalert.com/files/images/Reversi-Evaluation-full.jpg',
                 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqKCElfqAUODbBgi54kFoBhMqnG6OPlgqjgvf09-diYXoEPq3X:https://i.ytimg.com/vi/obegONrq7K0/maxresdefault.jpg',
                 'https://images-na.ssl-images-amazon.com/images/I/61HC1-GHCAL._SY355_.png',
-                'http://icons-for-free.com/free-icons/png/512/306932.png',
+                'https://www.shareicon.net/download/2016/08/18/814107_keyboard_512x512.png',
                 'http://www.rw-designer.com/icon-image/5547-256x256x8.png',
                 'http://icons.iconarchive.com/icons/martz90/hex/256/game-tower-defense-come2us-icon.png',
                 'https://cdn1.iconfinder.com/data/icons/game-21/32/Line_love-relationship-heart-health-512.png',
@@ -1627,7 +1627,7 @@
                 listIcons[i].src = gameIcons[i];
                 playButtons[i].setAttribute('data-index', i + '');
                 listIcons[i].addEventListener('load', function() {
-                    loaderWidthTotal = loaderWidthTotal + (100 / listIcons.length) + 0.1;
+                    loaderWidthTotal = loaderWidthTotal + (100 / listIcons.length);
                     loader.style.width = loaderWidthTotal + 'vw';
                     if (loaderWidthTotal >= 99.5) {
                         setTimeout(function() {
